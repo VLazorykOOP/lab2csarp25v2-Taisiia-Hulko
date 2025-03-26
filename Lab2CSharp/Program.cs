@@ -39,69 +39,92 @@ class Program
         }
     }
 
+    // Завдання 1: Підрахунок середнього арифметичного від’ємних елементів
     static void Task1()
     {
-        Console.Write("Введіть розмірність масиву: ");
+        Console.Write("Введіть кількість рядків (n): ");
         int n = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Введіть кількість стовпців (m): ");
+        int m = Convert.ToInt32(Console.ReadLine());
 
-        int[] numbers = new int[n];
+        int[,] matrix = new int[n, m]; // оголошення двовимірного масиву
 
+        // Введення елементів масиву
         for (int i = 0; i < n; i++)
         {
-            Console.Write("Введіть число для елемента " + i + ": ");
-            numbers[i] = Convert.ToInt32(Console.ReadLine());
+            for (int j = 0; j < m; j++)
+            {
+                Console.Write($"Введіть елемент matrix[{i},{j}]: ");
+                matrix[i, j] = Convert.ToInt32(Console.ReadLine());
+            }
         }
 
         int sum = 0, count = 0;
 
+        // Обчислення середнього арифметичного від'ємних елементів
         for (int i = 0; i < n; i++)
         {
-            if (numbers[i] < 0)
+            for (int j = 0; j < m; j++)
             {
-                sum = sum + numbers[i];
-                count = count + 1;
+                if (matrix[i, j] < 0)
+                {
+                    sum += matrix[i, j];
+                    count++;
+                }
             }
         }
 
         if (count > 0)
         {
             double average = (double)sum / count;
-            Console.WriteLine("Середнє арифметичне від’ємних: " + average);
+            Console.WriteLine("Середнє арифметичне від’ємних елементів: " + average);
         }
         else
         {
-            Console.WriteLine("Від’ємних чисел немає");
+            Console.WriteLine("Від’ємних елементів немає.");
         }
     }
 
+    // Завдання 2: Знайти номер першого мінімального елемента
     static void Task2()
     {
-        Console.Write("Введіть розмірність масиву: ");
+        Console.Write("Введіть кількість рядків (n): ");
         int n = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Введіть кількість стовпців (m): ");
+        int m = Convert.ToInt32(Console.ReadLine());
 
-        double[] numbers = new double[n];
+        int[,] matrix = new int[n, m]; // оголошення двовимірного масиву
 
+        // Введення елементів масиву
         for (int i = 0; i < n; i++)
         {
-            Console.Write("Введіть число для елемента " + i + ": ");
-            numbers[i] = Convert.ToDouble(Console.ReadLine());
+            for (int j = 0; j < m; j++)
+            {
+                Console.Write($"Введіть елемент matrix[{i},{j}]: ");
+                matrix[i, j] = Convert.ToInt32(Console.ReadLine());
+            }
         }
 
-        double min = numbers[0];
+        int min = matrix[0, 0];
         int minIndex = 0;
 
-        for (int i = 1; i < n; i++)
+        // Пошук мінімального елемента
+        for (int i = 0; i < n; i++)
         {
-            if (numbers[i] < min)
+            for (int j = 0; j < m; j++)
             {
-                min = numbers[i];
-                minIndex = i;
+                if (matrix[i, j] < min)
+                {
+                    min = matrix[i, j];
+                    minIndex = i * m + j; // обчислюємо однозначний індекс
+                }
             }
         }
 
         Console.WriteLine("Номер першого мінімального елемента: " + minIndex);
     }
 
+    // Завдання 3: Поміняти місцями рядки в квадратній матриці
     static void Task3()
     {
         Console.Write("Введіть розмірність квадратної матриці (n×n): ");
@@ -109,8 +132,7 @@ class Program
 
         int[,] matrix = new int[n, n];
 
-        Console.WriteLine("Введіть елементи матриці:");
-
+        // Введення елементів матриці
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
@@ -123,6 +145,7 @@ class Program
         Console.WriteLine("\nПочаткова матриця:");
         PrintMatrix(matrix, n);
 
+        // Перестановка рядків
         if (n % 2 == 0)
         {
             int mid1 = n / 2 - 1;
@@ -139,6 +162,7 @@ class Program
         PrintMatrix(matrix, n);
     }
 
+    // Функція для перестановки рядків
     static void SwapRows(int[,] matrix, int row1, int row2)
     {
         for (int j = 0; j < matrix.GetLength(1); j++)
@@ -149,6 +173,7 @@ class Program
         }
     }
 
+    // Функція для виведення матриці
     static void PrintMatrix(int[,] matrix, int n)
     {
         for (int i = 0; i < n; i++)
@@ -161,31 +186,26 @@ class Program
         }
     }
 
+    // Завдання 4: Знайти перші додатні елементи у східчастому масиві
     static void Task4()
     {
         Console.Write("Введіть кількість рядків (n): ");
         int n = Convert.ToInt32(Console.ReadLine());
 
-        int[][] jaggedArray = new int[n][];
-        int maxColumns = 0;
+        int[,] matrix = new int[n, n]; // оголошення двовимірного масиву
+        int maxColumns = n; // максимальна кількість стовпців (n для квадратної матриці)
 
+        // Введення елементів матриці
         for (int i = 0; i < n; i++)
         {
-            Console.Write($"Введіть кількість елементів у рядку {i + 1}: ");
-            int m = Convert.ToInt32(Console.ReadLine());
-            jaggedArray[i] = new int[m];
-
-            if (m > maxColumns)
-                maxColumns = m;
-
-            for (int j = 0; j < m; j++)
+            for (int j = 0; j < n; j++)
             {
-                Console.Write($"Введіть елемент [{i},{j}]: ");
-                jaggedArray[i][j] = Convert.ToInt32(Console.ReadLine());
+                Console.Write($"Введіть елемент matrix[{i},{j}]: ");
+                matrix[i, j] = Convert.ToInt32(Console.ReadLine());
             }
         }
 
-        int[] firstPositiveInColumn = new int[maxColumns];
+        int[] firstPositiveInColumn = new int[maxColumns]; // масив для перших додатних елементів у стовпцях
 
         for (int j = 0; j < maxColumns; j++)
         {
@@ -193,9 +213,9 @@ class Program
 
             for (int i = 0; i < n; i++)
             {
-                if (j < jaggedArray[i].Length && jaggedArray[i][j] > 0)
+                if (matrix[i, j] > 0)
                 {
-                    firstPositiveInColumn[j] = jaggedArray[i][j];
+                    firstPositiveInColumn[j] = matrix[i, j];
                     break;
                 }
             }
